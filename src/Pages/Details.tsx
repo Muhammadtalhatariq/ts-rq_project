@@ -1,8 +1,9 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { featchProduct } from "../Api/Api";
 import { Link, useParams } from "react-router-dom";
-import type { Product } from "../Types";
+import type { ProductDetails } from "../Types";
+import Loading from "../components/Loading";
 
 const Details: React.FC = () => {
   const { id } = useParams();
@@ -11,19 +12,28 @@ const Details: React.FC = () => {
     isError,
     isPending,
     error,
-  } = useQuery<Product>({
+  } = useQuery<ProductDetails>({
     queryKey: ["Cards", id],
     queryFn: () => featchProduct(id),
     staleTime: 20000,
-    placeholderData:keepPreviousData
   });
 
-  if (isPending) return <h1>Loading...</h1>;
-  if (isError) return <h1>{error.message || "Page not found"}</h1>;
+  if (isPending)
+    return (
+      <div className="h-screen text-2xl text-black flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  if (isError)
+    return (
+      <div className="h-screen text-xl text-red-500">
+        {error.message || "Page not found"}
+      </div>
+    );
 
   return (
     <div className="p-4 flex flex-wrap w-full items-center gap-4 text-black">
-      <div className="w-full md:w-[900px] h-full md:h-[400px] flex flex-col md:flex-row bg-gray-100 text-black rounded-2xl">
+      <div className="w-full md:w-[900px] h-full md:h-full flex flex-col md:flex-row bg-gray-100 text-black rounded-lg border-b-4 border-gray-300">
         <div className=" md:w-1/2 w-full flex items-center justify-center md:h-[380px] text-black h-52 overflow-hidden">
           <img
             className="p-4 object-center h-full md:w-96 w-72 hover:scale-105 rounded-3xl"
@@ -49,12 +59,12 @@ const Details: React.FC = () => {
             <span className="font-semibold text-lg">Description :</span>{" "}
             {carts.description}
           </p>
-          <div className="pt-8">
+          <div className="md:pt-16 pt-4 text-center w-full">
             <Link to="/products">
               {" "}
-              <span className="p-2 bg-red-400 cursor-pointer rounded-lg text-white font-semibold">
+              <div className="p-2 bg-gray-200 cursor-pointer rounded-lg text-white font-semibold">
                 Go back
-              </span>
+              </div>
             </Link>
           </div>
         </div>

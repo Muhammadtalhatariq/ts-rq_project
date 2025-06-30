@@ -24,9 +24,18 @@ export const featchProduct = async (id: number): Promise<Product | null> => {
 }
 
 export const deleteProduct = async (id: number): Promise<void> => {
-    await api.delete(`/products/${id}`)
-}
+    try {
+        await api.delete(`/products/${id}`)
+        console.log(`product delete successfully with id ${id}`);
+    } catch (error) {
+        console.log(`Failed to delete product with id ${id}`, error);
+    }
 
+}
 export const updateProduct = (id: number) => {
-    return api.patch(`/products/${id}`, { title: "I have updated" });
+    try {
+        return api.patch(`/products/${id}`, { title: "I have updated" });
+    } catch (error) {
+        console.log(`Failed to update product with id ${id}`, error);
+    }
 };

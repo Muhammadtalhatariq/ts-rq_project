@@ -16,6 +16,10 @@ const Navbar: React.FC = () => {
       name: "Products",
       link: "/products",
     },
+     {
+      name: "Add Product",
+      link: "/addproduct",
+    },
   ];
 
   return (
@@ -25,7 +29,7 @@ const Navbar: React.FC = () => {
           {navItems.map((item) => (
             <li
               key={item.name}
-              className="cursor-pointer hover:font-semibold hover:text-white duration-700"
+              className="cursor-pointer hover:text-white duration-700 font-semibold"
             >
               <NavLink to={item.link}>{item.name}</NavLink>
             </li>

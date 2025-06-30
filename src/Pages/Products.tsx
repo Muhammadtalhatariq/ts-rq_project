@@ -3,6 +3,7 @@ import React from "react";
 import { featchProducts } from "../Api/Api";
 import { Link } from "react-router-dom";
 import type { Product } from "../Types";
+import Loading from "../components/Loading";
 
 const Products: React.FC = () => {
   const { data, isError, error, isPending } = useQuery<Product[]>({
@@ -11,15 +12,25 @@ const Products: React.FC = () => {
     staleTime: 20000,
   });
 
-  if (isPending) return <h1>Loading...</h1>;
-  if (isError) return <h1>{error.message || "Page not found"}</h1>;
+  if (isPending)
+    return (
+      <div className="h-screen text-2xl text-black flex items-center justify-center">
+        <Loading />
+      </div>
+    );
+  if (isError)
+    return (
+      <div className="h-screen text-xl text-red-500">
+        {error.message || "Page not found"}
+      </div>
+    );
 
   return (
     <div className="p-4 flex flex-wrap w-full items-center justify-center gap-4">
       {data?.map((item) => (
         <div
           key={item.id}
-          className="md:w-72 w-80 h-[300px] bg-gray-100 text-black rounded-b-lg"
+          className="md:w-72 w-80 h-[300px] bg-gray-100 text-black rounded-lg border-b-4 border-gray-300"
         >
           <div className=" text-black w-full h-52 overflow-hidden hover:opacity-75 duration-700 cursor-pointer">
             <Link to={`/product/${item.id}`}>
